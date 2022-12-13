@@ -21,7 +21,8 @@ connection = pika.BlockingConnection(
 channel = connection.channel()
 
 # declaring a video queue to the rabbitmq
-channel.queue_declare(queue='video', durable=True)
+# channel.queue_declare(queue='video', durable=True)
+# channel.queue_declare(queue='mp3', durable=True)
 
 @server.route("/login", methods=["POST"])
 def login():

@@ -4,8 +4,8 @@ metadata:
   name: rabbitmq-ingress
 spec:
   rules:
-    - host: rabbitmq-manager.com
-      http:
+    - host: rmqmanager.com
+    - http:
         paths:
           - path: /
             pathType: Prefix

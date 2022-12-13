@@ -18,6 +18,10 @@ def main():
     )
     channel = connection.channel()
 
+    # using existing queue
+    # channel.queue_declare(queue='video')
+    # channel.queue_declare(queue='mp3')
+
     def callback(ch, method, properties, body):
         err = to_mp3.start(body, fs_videos, fs_mp3s, ch)
 

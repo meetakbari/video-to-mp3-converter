@@ -15,8 +15,13 @@ mongo = PyMongo(server)
 fs = gridfs.GridFS(mongo.db)
 
 
-connection = pika.BlockingConnection(pika.ConnectionParameters("rabbitmq"))
+connection = pika.BlockingConnection(
+    pika.ConnectionParameters(host="rabbitmq")
+)
 channel = connection.channel()
+
+# declaring a video queue to the rabbitmq
+channel.queue_declare(queue='video', durable=True)
 
 @server.route("/login", methods=["POST"])
 def login():

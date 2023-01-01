@@ -7,12 +7,16 @@ def login(request):
 
     basicAuth = (auth.username, auth.password)
 
+    print("getting basisAuth:--->", basicAuth)
+
     response = requests.post(
         f"http://{os.environ.get('AUTH_SVC_ADDRESS')}/login",
         auth=basicAuth
     )
+    print("after response printing ---------")
 
     if response.status_code == 200:
-        return response.txt, None
+        return response.text, None
     else:
-        return None, (response.txt, response.status_code)
+        print("error is auth----------")
+        return None, (response.text, response.status_code)

@@ -10,7 +10,7 @@ server.config["MYSQL_HOST"] = os.environ.get("MYSQL_HOST")
 server.config["MYSQL_USER"] = os.environ.get("MYSQL_USER")
 server.config["MYSQL_PASSWORD"] = os.environ.get("MYSQL_PASSWORD")
 server.config["MYSQL_DB"] = os.environ.get("MYSQL_DB")
-server.config["MYSQL_PORT"] = os.environ.get("MYSQL_PORT")
+server.config["MYSQL_PORT"] = int(os.environ.get("MYSQL_PORT"))
 
 @server.route("/login", methods=["POST"])
 def login():
@@ -19,13 +19,24 @@ def login():
         return "missing credentials", 401
 
     # check db for username and password
-    cur = mysql.connection.cursor()
+    print("before db connection....")
+    try:
+        conn = mysql.connection
+        print("conn ---> ", conn)
+        cur = conn.cursor()
+        print("cur ---> ", cur)
+    except:
+        return "db connection error", 500
+
+    print("after getting cursor ----> ", cur)
     res = cur.execute(
         "SELECT email, password FROM user WHERE email=%s", (auth.username,)
     )
+    print("result of execution of query : ", res)
 
     if res > 0:
         user_row = cur.fetchone()
+        cur.close();
         email = user_row[0]
         password = user_row[1]
 
@@ -71,4 +82,4 @@ def createJWT(username, secret, authz):
     )
 
 if __name__ == "__main__":
-    server.run(host="0.0.0.0", port=5000)
+    server.run(host="0.0.0.0", port=5000, debug=True)

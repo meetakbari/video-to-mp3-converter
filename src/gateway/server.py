@@ -14,7 +14,6 @@ mongo = PyMongo(server)
 
 fs = gridfs.GridFS(mongo.db)
 
-
 connection = pika.BlockingConnection(
     pika.ConnectionParameters(host="rabbitmq")
 )
@@ -31,6 +30,7 @@ def login():
     if not err:
         return token
     else:
+        print("came to the gateway's server file entry point --------------")
         return err
 
 @server.route("/upload", methods=["POST"])
@@ -63,4 +63,4 @@ def download():
     pass
 
 if __name__ == "__main__":
-    server.run(host="0.0.0.0", port=8080)
+    server.run(host="0.0.0.0", port=8080, debug=True)
